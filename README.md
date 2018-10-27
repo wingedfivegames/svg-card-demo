@@ -43,4 +43,6 @@ function replace_svg($svg, $row) {
 }
 ```
 
-The `find` and `replace` elements are simply test strings. Update those to match the content of your CSV and SVG template.
+The `find` and `replace` elements are simply text strings. Update those to match the content of your CSV and SVG template.
+
+Note: do not try to add the `@` symbol, it may corrupt the SVG's parsing.
