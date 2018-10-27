@@ -11,10 +11,9 @@
 
 // Load the CSV.
 $csv = get_csv();
-var_dump($csv);
 
 // Process the CSV.
-process_cards($csv);
+process_cards($csv, 'svg', 'png', TRUE);
 
 /**
  * Gets the CSV contents.
@@ -45,15 +44,23 @@ function _combine_array(&$row, $key, $header) {
  *
  * @param array $csv
  *   The contents of a CSV file, as an array, with a header row.
+ * @param $location
+ *   The directory to export the file to, relative to the script. Defaults to
+ *   'svg'.
+ * @param boolean $inkscape_export
+ *   Indicates that the script should copy the SVG to PNG using inkscape.
+ *   If you do not have inkscape installed, set this to false above.
  */
-function process_cards($csv) {
+function process_cards($csv, $location = 'svg', $target = 'png', $inkscape_export = TRUE) {
   $file = 'template-card.svg';
   $svg = file_get_contents($file);
   foreach ($csv as $row) {
     $name = 'card-' . strtolower($row['name']) . '.svg';
     $text = replace_svg($svg, $row);
-    file_put_contents($name, $text);
-    export_file($name);
+    file_put_contents($location . '/' . $name, $text);
+    if ($inkscape_export) {
+      export_file($name, $location, $target);
+    }
   }
 }
 
@@ -89,14 +96,17 @@ function replace_svg($svg, $row) {
  * @param $file
  *   The name of the file being exported.
  * @param $location
+ *   The directory of the file to be exported, relative to the script. Defaults
+ *   to 'svg'.
+ * @param $target
  *   The directory to export the file to, relative to the script. Defaults to
- *   'output'.
+ *   'png'.
  * @param $format
  *   The output format. Defaults to PNG.
  * @param int $dpi
  *   Dots per inch of the export file. Defaults to 300.
  */
-function export_file($file, $location = 'output', $format = 'png', $dpi = 300) {
+function export_file($file, $location = 'svg', $target = 'png', $format = 'png', $dpi = 300) {
   $newfile = str_replace('.svg', '.png', $file);
-  shell_exec("inkscape $file --export-png='$location/$newfile' -d 300");
+  shell_exec("inkscape '$location/$file' --export-png='$target/$newfile' -d 300");
 }
