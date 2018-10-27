@@ -1,7 +1,7 @@
 @WingedFiveGames SVG generator
 ===
 
-This repository demonstrates how to process a CSV into multiple SVG files from a template. If you have Inkscape installed, it will also export the new SVG files to PNG.
+This repository demonstrates how to process a CSV into multiple SVG files from a template. If you have [https://inkscape.org/](Inkscape) installed, it will also export the new SVG files to PNG.
 
 The export is included in the repository. To test for yourself, download the files in the root directory:
 
